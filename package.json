@@ -4,7 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start:dev": "webpack-dev-server --config webpack.config.dev.js --mode development"
+    "start:dev": "webpack-dev-server --config webpack.config.dev.js --mode development",
+    "lint": "eslint --ext .ts,.tsx src",
+    "fmt": "prettier -c src/**/*.{ts,tsx}",
+    "fmt:fix": "prettier -w src/**/*.{ts,tsx}"
   },
   "keywords": [],
   "author": "",
@@ -16,8 +19,14 @@
   "devDependencies": {
     "@types/react": "^18.2.31",
     "@types/react-dom": "^18.2.14",
+    "@typescript-eslint/eslint-plugin": "^5.36.1",
+    "@typescript-eslint/parser": "^5.36.1",
     "css-loader": "^6.8.1",
+    "eslint": "^8.23.0",
+    "eslint-plugin-react": "^7.31.4",
+    "eslint-plugin-security": "^1.5.0",
     "html-webpack-plugin": "^5.5.3",
+    "prettier": "^3.0.3",
     "style-loader": "^3.3.3",
     "ts-loader": "^9.5.0",
     "webpack": "^5.89.0",
