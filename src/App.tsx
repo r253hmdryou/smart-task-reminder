@@ -2,7 +2,7 @@ import { Container, CssBaseline, Grid } from "@mui/material";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
 
-import { NewReminderForm } from "@/Components/Form/NewReminderForm";
+import { ReminderRegistrationForm } from "@/Components/Form/ReminderRegistrationForm";
 
 export function App() {
   return (
@@ -11,7 +11,7 @@ export function App() {
       <Container sx={{ padding: "16px" }}>
         <Grid container justifyContent="center">
           <Grid item xs={6}>
-            <NewReminderForm
+            <ReminderRegistrationForm
               onSubmit={(reminder) => {
                 console.log(reminder);
               }}

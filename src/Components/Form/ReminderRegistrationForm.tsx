@@ -47,7 +47,7 @@ type Props = {
   onSubmit: (reminder: Reminder) => void;
 };
 
-export function NewReminderForm(props: Props) {
+export function ReminderRegistrationForm(props: Props) {
   const [reminder, dispatch] = useReducer(reducer, initialReminder);
 
   function handleChangeDate(newValue: moment.Moment | null) {
