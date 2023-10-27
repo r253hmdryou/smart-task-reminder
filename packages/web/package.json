@@ -1,5 +1,5 @@
 {
-  "name": "smart-task-reminder",
+  "name": "@smart-task-reminder/web",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
