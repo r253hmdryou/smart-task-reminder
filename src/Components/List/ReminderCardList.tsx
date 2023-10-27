@@ -1,6 +1,6 @@
 import { Grid } from "@mui/material";
 
-import { Reminder } from "@/App";
+import { Reminder } from "@/Pages/HomePage";
 import { ReminderCard } from "@/Components/Card/ReminderCard";
 
 type Props = {

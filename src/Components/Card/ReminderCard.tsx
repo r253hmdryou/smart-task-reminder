@@ -1,5 +1,5 @@
 import { Card, CardContent, Typography } from "@mui/material";
-import { Reminder } from "@/App";
+import { Reminder } from "@/Pages/HomePage";
 
 type Props = {
   reminder: Reminder;
