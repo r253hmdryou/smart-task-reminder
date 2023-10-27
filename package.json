@@ -7,7 +7,8 @@
   ],
   "scripts": {
     "start:dev": "run-p start:dev:*",
-    "start:dev:web": "npm run start:dev -w @smart-task-reminder/web"
+    "start:dev:web": "npm run start:dev -w @smart-task-reminder/web",
+    "start:dev:backend": "npm run start:dev -w @smart-task-reminder/backend"
   },
   "devDependencies": {
     "npm-run-all": "^4.1.5"
