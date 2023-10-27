@@ -15,7 +15,7 @@ export type ReminderCreation = {
 type Action =
   | {
       type: "change";
-      state: Partial<ReminderCreation>;
+      payload: Partial<ReminderCreation>;
     }
   | {
       type: "reset";
@@ -35,7 +35,7 @@ function reducer(state: ReminderCreation, action: Action) {
         ...state,
         isEditing: true,
         datetime: state.isEditing ? state.datetime : getNextRounded30Minutes(moment().add(30, "minutes")),
-        ...action.state,
+        ...action.payload,
       };
 
     case "reset":
@@ -53,7 +53,7 @@ export function ReminderRegistrationForm(props: Props) {
   function handleChangeDate(newValue: moment.Moment | null) {
     dispatch({
       type: "change",
-      state: {
+      payload: {
         datetime: newValue,
       },
     });
@@ -62,7 +62,7 @@ export function ReminderRegistrationForm(props: Props) {
   function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
     dispatch({
       type: "change",
-      state: {
+      payload: {
         [event.target.name]: event.target.value,
       },
     });

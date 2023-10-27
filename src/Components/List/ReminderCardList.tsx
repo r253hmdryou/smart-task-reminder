@@ -1,7 +1,7 @@
 import { Grid } from "@mui/material";
 
-import { Reminder } from "@/Pages/HomePage";
 import { ReminderCard } from "@/Components/Card/ReminderCard";
+import { Reminder } from "@/Reducer/remindersReducer";
 
 type Props = {
   reminders: Reminder[];
