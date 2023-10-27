@@ -1,0 +1,15 @@
+{
+  "name": "@smart-task-reminder/root",
+  "private": true,
+  "workspaces": [
+    "packages/web",
+    "packages/backend"
+  ],
+  "scripts": {
+    "start:dev": "run-p start:dev:*",
+    "start:dev:web": "npm run start:dev -w @smart-task-reminder/web"
+  },
+  "devDependencies": {
+    "npm-run-all": "^4.1.5"
+  }
+}
