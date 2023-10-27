@@ -5,7 +5,7 @@ import { DateTimePicker, renderTimeViewClock } from "@mui/x-date-pickers";
 
 import { getNextRounded30Minutes } from "@/libs/utils";
 
-type Reminder = {
+export type ReminderCreation = {
   title: string;
   description: string;
   isEditing: boolean;
@@ -15,20 +15,20 @@ type Reminder = {
 type Action =
   | {
       type: "change";
-      state: Partial<Reminder>;
+      state: Partial<ReminderCreation>;
     }
   | {
       type: "reset";
     };
 
-const initialReminder: Reminder = {
+const initialReminder: ReminderCreation = {
   title: "",
   description: "",
   isEditing: false,
   datetime: null,
 };
 
-function reducer(state: Reminder, action: Action) {
+function reducer(state: ReminderCreation, action: Action) {
   switch (action.type) {
     case "change":
       return {
@@ -44,7 +44,7 @@ function reducer(state: Reminder, action: Action) {
 }
 
 type Props = {
-  onSubmit: (reminder: Reminder) => void;
+  onSubmit: (reminder: ReminderCreation) => void;
 };
 
 export function ReminderRegistrationForm(props: Props) {
