@@ -1,5 +1,5 @@
-import { Controller, Get } from '@nestjs/common';
-import { AppService } from './app.service';
+import { Body, Controller, Get, Post } from '@nestjs/common';
+import { AppService, Reminder } from './app.service';
 
 @Controller()
 export class AppController {
@@ -8,5 +8,15 @@ export class AppController {
   @Get()
   getHello(): string {
     return this.appService.getHello();
+  }
+
+  @Get('/reminders')
+  getReminders(): Reminder[] {
+    return this.appService.getReminders();
+  }
+
+  @Post('/reminders')
+  postReminders(@Body() createReminderDto): Reminder {
+    return this.appService.postReminders(createReminderDto);
   }
 }
