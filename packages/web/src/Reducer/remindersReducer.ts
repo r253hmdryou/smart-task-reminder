@@ -1,40 +1,48 @@
 import { useReducer } from "react";
 import moment from "moment";
 
-import { ReminderCreation } from "@/Components/Form/ReminderRegistrationForm";
-import { v4 } from "uuid";
-
 export type Reminder = {
   uuid: string;
   title: string;
   description: string;
-  datetime: moment.Moment | null;
+  datetime: moment.Moment;
 };
 
-export type ReminderAction = {
-  type: "add";
-  payload: ReminderCreation;
+export type ReminderResponse = {
+  uuid: string;
+  title: string;
+  description: string;
+  datetime: string;
 };
 
-export const reminderInitialState: Reminder[] = [
-  {
-    uuid: "e68233f5-21bd-4dab-821d-04a587d7bb5a",
-    title: "さんちゃんのご飯",
-    description: "さんちゃんにご飯を上げる",
-    datetime: moment("2023-10-27T19:00:00+09:00"),
-  },
-];
+export type ReminderAction =
+  | {
+      type: "ADD";
+      payload: ReminderResponse;
+    }
+  | {
+      type: "REFRESH";
+      payload: ReminderResponse[];
+    };
+
+export const reminderInitialState: Reminder[] = [];
 
 function reducer(state: Reminder[], action: ReminderAction): Reminder[] {
   switch (action.type) {
-    case "add":
+    case "ADD":
       return [
         ...state,
         {
           ...action.payload,
-          uuid: v4(),
+          datetime: moment(action.payload.datetime),
         },
       ];
+
+    case "REFRESH":
+      return action.payload.map((reminder) => ({
+        ...reminder,
+        datetime: moment(reminder.datetime),
+      }));
   }
 }
 

@@ -10,7 +10,7 @@ export function ReminderCard(props: Props) {
     <Card>
       <CardContent>
         <Typography variant="h5">{reminder.title}</Typography>
-        <Typography color="text.secondary">{reminder.datetime?.format("YYYY/MM/DD HH:mm")}</Typography>
+        <Typography color="text.secondary">{reminder.datetime.format("YYYY/MM/DD HH:mm")}</Typography>
         <Typography>{reminder.description}</Typography>
       </CardContent>
     </Card>
