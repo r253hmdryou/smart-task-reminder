@@ -15,6 +15,7 @@ module.exports = {
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "/src"),
+      "@smart-task-reminder/common": path.resolve(__dirname, "../common/dist"),
     },
     extensions: [".ts", ".tsx", ".js"],
   },

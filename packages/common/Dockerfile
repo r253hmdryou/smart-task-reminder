@@ -6,9 +6,9 @@ USER node
 WORKDIR /usr/src/app
 
 COPY --chown=node:node package*.json ./
-COPY --chown=node:node packages/web/package.json ./packages/web/
+COPY --chown=node:node packages/common/package.json ./packages/common/
 RUN npm ci
 
 EXPOSE 4000
 
-CMD ["npm", "run", "start:dev:web"]
+CMD ["npm", "run", "start:dev:common"]

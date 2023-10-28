@@ -3,14 +3,20 @@
   "private": true,
   "workspaces": [
     "packages/web",
-    "packages/backend"
+    "packages/backend",
+    "packages/common"
   ],
   "scripts": {
     "start:dev": "run-p start:dev:*",
+    "start:dev:common": "npm run start:dev -w @smart-task-reminder/common",
     "start:dev:web": "npm run start:dev -w @smart-task-reminder/web",
     "start:dev:backend": "npm run start:dev -w @smart-task-reminder/backend"
   },
+  "dependencies": {
+    "zod": "^3.22.4"
+  },
   "devDependencies": {
-    "npm-run-all": "^4.1.5"
+    "npm-run-all": "^4.1.5",
+    "typescript": "^5.2.2"
   }
 }

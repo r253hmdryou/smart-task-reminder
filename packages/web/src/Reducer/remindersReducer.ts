@@ -1,18 +1,12 @@
 import { useReducer } from "react";
 import moment from "moment";
+import { ReminderResponse } from "@smart-task-reminder/common";
 
 export type Reminder = {
   uuid: string;
   title: string;
   description: string;
   datetime: moment.Moment;
-};
-
-export type ReminderResponse = {
-  uuid: string;
-  title: string;
-  description: string;
-  datetime: string;
 };
 
 export type ReminderAction =

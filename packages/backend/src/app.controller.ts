@@ -1,7 +1,10 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
-import { AppService, Reminder } from './app.service';
+import { Body, Controller, Get, Post, UsePipes } from '@nestjs/common';
+import { ZodValidationPipe } from 'nestjs-zod';
+import { AppService } from './app.service';
+import { ReminderCreationDto, ReminderResponseDto } from './app.dto';
 
 @Controller()
+@UsePipes(ZodValidationPipe)
 export class AppController {
   constructor(private readonly appService: AppService) {}
 
@@ -11,12 +14,14 @@ export class AppController {
   }
 
   @Get('/reminders')
-  getReminders(): Reminder[] {
-    return this.appService.getReminders();
+  async getReminders(): Promise<ReminderResponseDto[]> {
+    return await this.appService.getReminders();
   }
 
   @Post('/reminders')
-  postReminders(@Body() createReminderDto): Reminder {
-    return this.appService.postReminders(createReminderDto);
+  async postReminders(
+    @Body() reminderCreationDto: ReminderCreationDto,
+  ): Promise<ReminderResponseDto> {
+    return await this.appService.postReminders(reminderCreationDto);
   }
 }

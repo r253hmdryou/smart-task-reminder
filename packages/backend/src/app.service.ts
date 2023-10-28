@@ -1,18 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { v4 } from 'uuid';
-
-export type Reminder = {
-  uuid: string;
-  title: string;
-  description: string;
-  datetime: string;
-};
-
-type ReminderCreation = {
-  title: string;
-  description: string;
-  datetime: string;
-};
+import { ReminderCreationDto, ReminderResponseDto } from './app.dto';
 
 const reminders = [
   {
@@ -29,11 +17,13 @@ export class AppService {
     return 'Hello World!';
   }
 
-  getReminders(): Reminder[] {
+  async getReminders(): Promise<ReminderResponseDto[]> {
     return reminders;
   }
 
-  postReminders(reminder: ReminderCreation): Reminder {
+  async postReminders(
+    reminder: ReminderCreationDto,
+  ): Promise<ReminderResponseDto> {
     const newReminder = {
       ...reminder,
       uuid: v4(),

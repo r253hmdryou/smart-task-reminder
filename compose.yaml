@@ -1,6 +1,7 @@
 version: "3.0"
 services:
   backend:
+    container_name: backend
     build:
       context: .
       dockerfile: ./packages/backend/Dockerfile
@@ -8,8 +9,10 @@ services:
       - "3000:3000"
     volumes:
       - ./packages/backend:/usr/src/app/packages/backend
+      - ./packages/common:/usr/src/app/packages/common
 
   web:
+    container_name: web
     build:
       context: .
       dockerfile: ./packages/web/Dockerfile
@@ -17,3 +20,12 @@ services:
       - "4000:4000"
     volumes:
       - ./packages/web:/usr/src/app/packages/web
+      - ./packages/common:/usr/src/app/packages/common
+
+  common:
+    container_name: common
+    build:
+      context: .
+      dockerfile: ./packages/common/Dockerfile
+    volumes:
+      - ./packages/common:/usr/src/app/packages/common

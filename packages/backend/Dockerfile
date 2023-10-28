@@ -7,7 +7,7 @@ WORKDIR /usr/src/app
 
 COPY --chown=node:node package*.json ./
 COPY --chown=node:node packages/backend/package.json ./packages/backend/
-RUN npm -w @smart-task-reminder/backend ci
+RUN npm ci
 
 EXPOSE 3000
 

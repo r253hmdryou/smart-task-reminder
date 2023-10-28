@@ -11,9 +11,12 @@
     "moduleResolution": "node16",
 
     "jsx": "react-jsx",
+    "rootDir": "src",
+    "outDir": "./dist",
     "baseUrl": ".",
     "paths": {
-      "@/*": ["src/*"]
+      "@/*": ["src/*"],
+      "@smart-task-reminder/common": ["../common/dist"]
     }
   }
 }
