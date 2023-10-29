@@ -2,6 +2,9 @@ version: "3.0"
 services:
   backend:
     container_name: backend
+    depends_on:
+      mysql:
+        condition: service_healthy
     build:
       context: .
       dockerfile: ./packages/backend/Dockerfile
@@ -29,3 +32,27 @@ services:
       dockerfile: ./packages/common/Dockerfile
     volumes:
       - ./packages/common:/usr/src/app/packages/common
+
+  mysql:
+    container_name: db-mysql
+    hostname: db-mysql
+    build:
+      context: ./packages/backend/docker/db
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+    env_file:
+      - ./packages/backend/.env
+    environment:
+      MYSQL_ONETIME_PASSWORD: "no"
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_general_ci
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -u root -ppassword | grep 'mysqld is alive'"]
+      timeout: 10s
+      retries: 10
+
+volumes:
+  mysql-data:
+    driver: local
+    external: false

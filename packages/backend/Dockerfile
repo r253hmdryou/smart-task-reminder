@@ -11,4 +11,4 @@ RUN npm ci
 
 EXPOSE 3000
 
-CMD ["npm", "run", "start:dev:backend"]
+CMD ./packages/backend/start.sh

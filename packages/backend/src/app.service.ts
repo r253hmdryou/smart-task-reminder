@@ -1,34 +1,42 @@
 import { Injectable } from '@nestjs/common';
 import { v4 } from 'uuid';
-import { ReminderCreationDto, ReminderResponseDto } from './app.dto';
+import { Reminder } from '@prisma/client';
 
-const reminders = [
-  {
-    uuid: 'e68233f5-21bd-4dab-821d-04a587d7bb5a',
-    title: 'さんちゃんのご飯',
-    description: 'さんちゃんにご飯を上げる',
-    datetime: new Date('2023-10-27T19:00:00+09:00').toISOString(),
-  },
-];
+import { PrismaService } from './vendors/prisma/prisma.service';
+import { ReminderCreationDto, ReminderResponseDto } from './app.dto';
 
 @Injectable()
 export class AppService {
+  constructor(private prisma: PrismaService) {}
+
   getHello(): string {
     return 'Hello World!';
   }
 
   async getReminders(): Promise<ReminderResponseDto[]> {
-    return reminders;
+    const reminders = await this.prisma.reminder.findMany();
+    return reminders.map(this.toResponse);
   }
 
   async postReminders(
-    reminder: ReminderCreationDto,
+    creationDto: ReminderCreationDto,
   ): Promise<ReminderResponseDto> {
-    const newReminder = {
-      ...reminder,
-      uuid: v4(),
+    const reminder = await this.prisma.reminder.create({
+      data: {
+        ...creationDto,
+        uuid: v4(),
+        createdAt: new Date(),
+      },
+    });
+    return this.toResponse(reminder);
+  }
+
+  private toResponse(reminder: Reminder): ReminderResponseDto {
+    return {
+      uuid: reminder.uuid,
+      title: reminder.title,
+      description: reminder.description,
+      datetime: reminder.datetime.toISOString(),
     };
-    reminders.push(newReminder);
-    return newReminder;
   }
 }
