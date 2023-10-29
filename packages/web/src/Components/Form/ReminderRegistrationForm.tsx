@@ -111,7 +111,7 @@ export function ReminderRegistrationForm(props: Props) {
     reminderRepository
       .createReminder({
         ...reminder,
-        datetime: reminder.datetime!.toISOString(),
+        datetime: reminder.datetime!.second(0).millisecond(0).toISOString(),
       })
       .then((response) => {
         remindersDispatch({
