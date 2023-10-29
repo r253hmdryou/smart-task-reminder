@@ -108,7 +108,7 @@ export function ReminderRegistrationForm(props: Props) {
       return;
     }
     try {
-      const response = await axios.post("http://localhost:3000/reminders", reminder);
+      const response = await axios.post("http://localhost:3000/v1/reminders", reminder);
       remindersDispatch({
         type: "ADD",
         payload: response.data,

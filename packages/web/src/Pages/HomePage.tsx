@@ -11,7 +11,7 @@ export function HomePage() {
   const remindersDispatch = useContext(RemindersDispatchContext);
 
   async function refreshReminders() {
-    axios.get("http://localhost:3000/reminders").then((response) => {
+    axios.get("http://localhost:3000/v1/reminders").then((response) => {
       remindersDispatch({
         type: "REFRESH",
         payload: response.data,
