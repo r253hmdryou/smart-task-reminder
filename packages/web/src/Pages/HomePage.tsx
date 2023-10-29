@@ -1,6 +1,6 @@
 import { useContext, useEffect } from "react";
 import { Container, Grid } from "@mui/material";
-import axios from "axios";
+import { reminderRepository } from "@smart-task-reminder/api-client";
 
 import { RemindersContext, RemindersDispatchContext } from "@/Context";
 import { ReminderRegistrationForm } from "@/Components/Form/ReminderRegistrationForm";
@@ -11,7 +11,7 @@ export function HomePage() {
   const remindersDispatch = useContext(RemindersDispatchContext);
 
   async function refreshReminders() {
-    axios.get("http://localhost:3000/v1/reminders").then((response) => {
+    reminderRepository.getReminders().then((response) => {
       remindersDispatch({
         type: "REFRESH",
         payload: response.data,

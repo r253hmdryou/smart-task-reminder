@@ -1,10 +1,11 @@
 import { useContext, useReducer, useState } from "react";
 import moment from "moment";
 import { z } from "zod";
-import axios, { AxiosError } from "axios";
+import { AxiosError } from "axios";
 import { Button, Stack, TextField } from "@mui/material";
 import { DateTimePicker, renderTimeViewClock } from "@mui/x-date-pickers";
 import { ReminderCreationSchema } from "@smart-task-reminder/common";
+import { reminderRepository } from "@smart-task-reminder/api-client";
 
 import { RemindersDispatchContext } from "@/Context";
 import { getNextRounded30Minutes } from "@/libs/utils";
@@ -86,7 +87,7 @@ export function ReminderRegistrationForm(props: Props) {
     });
   }
 
-  function validation(reminder: ReminderCreation) {
+  function validation(reminder: ReminderCreation): reminder is Required<ReminderCreation> {
     try {
       ReminderCreationSchema.parse({
         ...reminder,
@@ -107,28 +108,33 @@ export function ReminderRegistrationForm(props: Props) {
     if (!validation(reminder)) {
       return;
     }
-    try {
-      const response = await axios.post("http://localhost:3000/v1/reminders", reminder);
-      remindersDispatch({
-        type: "ADD",
-        payload: response.data,
+    reminderRepository
+      .createReminder({
+        ...reminder,
+        datetime: reminder.datetime!.toISOString(),
+      })
+      .then((response) => {
+        remindersDispatch({
+          type: "ADD",
+          payload: response.data,
+        });
+        props.onRegister();
+        dispatch({ type: "reset" });
+        setError([]);
+      })
+      .catch((err) => {
+        if (!(err instanceof AxiosError)) {
+          throw err;
+        }
+        if (err.response === undefined) {
+          throw err;
+        }
+        const errorResponse = err.response.data;
+        if (!isValidationError(errorResponse)) {
+          throw err;
+        }
+        setError(errorResponse.errors);
       });
-      props.onRegister();
-      dispatch({ type: "reset" });
-      setError([]);
-    } catch (err) {
-      if (!(err instanceof AxiosError)) {
-        throw err;
-      }
-      if (err.response === undefined) {
-        throw err;
-      }
-      const errorResponse = err.response.data;
-      if (!isValidationError(errorResponse)) {
-        throw err;
-      }
-      setError(errorResponse.errors);
-    }
   }
 
   function isInvalid(error: z.ZodIssue[], name: string) {

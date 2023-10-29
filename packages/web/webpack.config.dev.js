@@ -1,5 +1,8 @@
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
+const webpack = require("webpack");
+const dotenv = require("dotenv");
+const env = dotenv.config().parsed;
 
 module.exports = {
   mode: "development",
@@ -16,6 +19,7 @@ module.exports = {
     alias: {
       "@": path.resolve(__dirname, "/src"),
       "@smart-task-reminder/common": path.resolve(__dirname, "../common/dist"),
+      "@smart-task-reminder/api-client": path.resolve(__dirname, "../api-client/dist"),
     },
     extensions: [".ts", ".tsx", ".js"],
   },
@@ -47,6 +51,9 @@ module.exports = {
   plugins: [
     new HtmlWebpackPlugin({
       template: "./src/public/index.html",
+    }),
+    new webpack.DefinePlugin({
+      "process.env": JSON.stringify(env),
     }),
   ],
 };

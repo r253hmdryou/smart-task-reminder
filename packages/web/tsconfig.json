@@ -16,7 +16,8 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["src/*"],
-      "@smart-task-reminder/common": ["../common/dist"]
+      "@smart-task-reminder/common": ["../common/dist"],
+      "@smart-task-reminder/api-client": ["../api-client/dist"]
     }
   }
 }

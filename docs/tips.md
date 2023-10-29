@@ -4,6 +4,12 @@
 $ npm install <package> -w <workspace>
 ```
 
+## 新たなワークスペースの作成
+
+```sh
+npm init -w packages/<workspace>
+```
+
 ## prisma
 
 - push - schemaに記述した内容をDBに反映させる

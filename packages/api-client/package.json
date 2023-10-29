@@ -1,0 +1,22 @@
+{
+  "name": "@smart-task-reminder/api-client",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "generate": "openapi-generator-cli generate -i ../backend/dist/swagger.yaml -g typescript-axios -o ./src/codegen/",
+    "postgenerate": "npm run build",
+    "build": "tsc",
+    "start:dev": "tsc -b --watch"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@openapitools/openapi-generator-cli": "^2.7.0",
+    "axios": "^1.6.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.8.9"
+  }
+}
