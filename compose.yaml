@@ -53,14 +53,6 @@ services:
       timeout: 10s
       retries: 10
 
-  api-client:
-    container_name: api-client
-    build:
-      context: .
-      dockerfile: ./packages/api-client/Dockerfile
-    volumes:
-      - ./packages/api-client:/usr/src/app/packages/api-client
-
 volumes:
   mysql-data:
     driver: local
