@@ -13,25 +13,29 @@ export class ReminderService {
     return 'Hello World!';
   }
 
-  async getReminders(): Promise<ReminderResponseDto[]> {
-    const reminders = await this.prisma.reminder.findMany();
-    return reminders.map(this.toResponse);
+  async findAll(): Promise<Reminder[]> {
+    return await this.prisma.reminder.findMany();
   }
 
-  async postReminders(
-    creationDto: ReminderCreationDto,
-  ): Promise<ReminderResponseDto> {
-    const reminder = await this.prisma.reminder.create({
+  async findByUuid(uuid: string): Promise<Reminder> {
+    return await this.prisma.reminder.findUnique({ where: { uuid } });
+  }
+
+  async create(creationDto: ReminderCreationDto): Promise<Reminder> {
+    return await this.prisma.reminder.create({
       data: {
         ...creationDto,
         uuid: v4(),
         createdAt: new Date(),
       },
     });
-    return this.toResponse(reminder);
   }
 
-  private toResponse(reminder: Reminder): ReminderResponseDto {
+  async remove(reminder: Reminder): Promise<void> {
+    await this.prisma.reminder.delete({ where: { uuid: reminder.uuid } });
+  }
+
+  toResponse(reminder: Reminder): ReminderResponseDto {
     return {
       uuid: reminder.uuid,
       title: reminder.title,

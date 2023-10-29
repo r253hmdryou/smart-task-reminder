@@ -30,7 +30,7 @@ export function HomePage() {
           <ReminderRegistrationForm onRegister={refreshReminders} />
         </Grid>
       </Grid>
-      <ReminderCardList reminders={reminders} />
+      <ReminderCardList reminders={reminders} onRemove={refreshReminders} />
     </Container>
   );
 }

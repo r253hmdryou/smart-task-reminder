@@ -17,6 +17,10 @@ export type ReminderAction =
   | {
       type: "REFRESH";
       payload: ReminderResponse[];
+    }
+  | {
+      type: "REMOVE";
+      payload: string;
     };
 
 export const reminderInitialState: Reminder[] = [];
@@ -37,6 +41,9 @@ function reducer(state: Reminder[], action: ReminderAction): Reminder[] {
         ...reminder,
         datetime: moment(reminder.datetime),
       }));
+
+    case "REMOVE":
+      return state.filter((reminder) => reminder.uuid !== action.payload);
   }
 }
 

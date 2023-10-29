@@ -1,8 +1,17 @@
-import { Body, Controller, Get, Post, UsePipes } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  UsePipes,
+} from '@nestjs/common';
 import { ZodValidationPipe } from 'nestjs-zod';
 import {
   ApiBadRequestResponse,
   ApiCreatedResponse,
+  ApiNoContentResponse,
   ApiOkResponse,
   ApiOperation,
   ApiTags,
@@ -26,7 +35,10 @@ export class ReminderController {
   })
   @ApiOkResponse({ type: ReminderResponseDto, isArray: true })
   async getReminders(): Promise<ReminderResponseDto[]> {
-    return await this.reminderService.getReminders();
+    const reminders = await this.reminderService.findAll();
+    return reminders.map((reminder) =>
+      this.reminderService.toResponse(reminder),
+    );
   }
 
   @Post()
@@ -39,6 +51,19 @@ export class ReminderController {
   async postReminders(
     @Body() reminderCreationDto: ReminderCreationDto,
   ): Promise<ReminderResponseDto> {
-    return await this.reminderService.postReminders(reminderCreationDto);
+    const reminder = await this.reminderService.create(reminderCreationDto);
+    return this.reminderService.toResponse(reminder);
+  }
+
+  @Delete('/:id')
+  @ApiOperation({
+    operationId: 'removeReminder',
+    summary: 'リマインダーを削除する',
+    description: 'リマインダーを削除する',
+  })
+  @ApiNoContentResponse()
+  async deleteReminder(@Param('id') id: string): Promise<void> {
+    const reminder = await this.reminderService.findByUuid(id);
+    await this.reminderService.remove(reminder);
   }
 }

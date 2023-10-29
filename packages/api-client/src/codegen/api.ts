@@ -271,6 +271,47 @@ export const ReminderApiAxiosParamCreator = function (configuration?: Configurat
                 options: localVarRequestOptions,
             };
         },
+        /**
+         * リマインダーを削除する
+         * @summary リマインダーを削除する
+         * @param {string} id 
+         * @param {any} [xRequestedWith] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        removeReminder: async (id: string, xRequestedWith?: any, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('removeReminder', 'id', id)
+            const localVarPath = `/v1/reminders/{id}`
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (xRequestedWith != null) {
+                localVarHeaderParameter['X-Requested-With'] = typeof xRequestedWith === 'string'
+                    ? xRequestedWith
+                    : JSON.stringify(xRequestedWith);
+            }
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
     }
 };
 
@@ -304,6 +345,18 @@ export const ReminderApiFp = function(configuration?: Configuration) {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getReminders(xRequestedWith, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
+        /**
+         * リマインダーを削除する
+         * @summary リマインダーを削除する
+         * @param {string} id 
+         * @param {any} [xRequestedWith] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async removeReminder(id: string, xRequestedWith?: any, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.removeReminder(id, xRequestedWith, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
     }
 };
 
@@ -334,6 +387,17 @@ export const ReminderApiFactory = function (configuration?: Configuration, baseP
          */
         getReminders(xRequestedWith?: any, options?: any): AxiosPromise<Array<ReminderResponseDto>> {
             return localVarFp.getReminders(xRequestedWith, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * リマインダーを削除する
+         * @summary リマインダーを削除する
+         * @param {string} id 
+         * @param {any} [xRequestedWith] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        removeReminder(id: string, xRequestedWith?: any, options?: any): AxiosPromise<void> {
+            return localVarFp.removeReminder(id, xRequestedWith, options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -368,6 +432,19 @@ export class ReminderApi extends BaseAPI {
      */
     public getReminders(xRequestedWith?: any, options?: AxiosRequestConfig) {
         return ReminderApiFp(this.configuration).getReminders(xRequestedWith, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * リマインダーを削除する
+     * @summary リマインダーを削除する
+     * @param {string} id 
+     * @param {any} [xRequestedWith] 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ReminderApi
+     */
+    public removeReminder(id: string, xRequestedWith?: any, options?: AxiosRequestConfig) {
+        return ReminderApiFp(this.configuration).removeReminder(id, xRequestedWith, options).then((request) => request(this.axios, this.basePath));
     }
 }
 
