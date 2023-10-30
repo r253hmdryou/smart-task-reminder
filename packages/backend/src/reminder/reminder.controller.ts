@@ -5,6 +5,7 @@ import {
   Get,
   Param,
   Post,
+  Put,
   UsePipes,
 } from '@nestjs/common';
 import { ZodValidationPipe } from 'nestjs-zod';
@@ -34,7 +35,7 @@ export class ReminderController {
     description: 'リマインダー一覧を取得する',
   })
   @ApiOkResponse({ type: ReminderResponseDto, isArray: true })
-  async getReminders(): Promise<ReminderResponseDto[]> {
+  async get(): Promise<ReminderResponseDto[]> {
     const reminders = await this.reminderService.findAll();
     return reminders.map((reminder) =>
       this.reminderService.toResponse(reminder),
@@ -48,7 +49,7 @@ export class ReminderController {
     description: 'リマインダーを登録する',
   })
   @ApiCreatedResponse({ type: ReminderResponseDto })
-  async postReminders(
+  async post(
     @Body() reminderCreationDto: ReminderCreationDto,
   ): Promise<ReminderResponseDto> {
     const reminder = await this.reminderService.create(reminderCreationDto);
@@ -62,8 +63,20 @@ export class ReminderController {
     description: 'リマインダーを削除する',
   })
   @ApiNoContentResponse()
-  async deleteReminder(@Param('id') id: string): Promise<void> {
+  async deleteIdReminder(@Param('id') id: string): Promise<void> {
     const reminder = await this.reminderService.findByUuid(id);
     await this.reminderService.remove(reminder);
+  }
+
+  @Put('/:id/complete')
+  @ApiOperation({
+    operationId: 'completeReminder',
+    summary: 'リマインダーを完了状態にする',
+    description: 'リマインダーを完了状態にする',
+  })
+  @ApiOkResponse()
+  async putIdReminder(@Param('id') id: string): Promise<void> {
+    const reminder = await this.reminderService.findByUuid(id);
+    await this.reminderService.complete(reminder);
   }
 }

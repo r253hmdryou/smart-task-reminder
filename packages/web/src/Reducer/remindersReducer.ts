@@ -19,7 +19,7 @@ export type ReminderAction =
       payload: ReminderResponse[];
     }
   | {
-      type: "REMOVE";
+      type: "REMOVE" | "COMPLETE";
       payload: string;
     };
 
@@ -43,6 +43,7 @@ function reducer(state: Reminder[], action: ReminderAction): Reminder[] {
       }));
 
     case "REMOVE":
+    case "COMPLETE":
       return state.filter((reminder) => reminder.uuid !== action.payload);
   }
 }

@@ -5,8 +5,8 @@
   "main": "index.js",
   "private": true,
   "scripts": {
-    "prisma:generate": "prisma generate",
-    "prisma:push": "prisma db push",
+    "prisma:generate": "dotenv -c migration prisma generate",
+    "prisma:push": "dotenv -c migration prisma db push",
     "prisma:migrate": "dotenv -c migration prisma migrate dev --name",
     "prisma:deploy": "dotenv -c migration prisma migrate deploy",
     "build": "nest build",

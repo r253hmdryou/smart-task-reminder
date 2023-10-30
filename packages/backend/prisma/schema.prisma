@@ -17,4 +17,5 @@ model Reminder {
   description String
   datetime DateTime
   createdAt DateTime
+  completedAt DateTime?
 }

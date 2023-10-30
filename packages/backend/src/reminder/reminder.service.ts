@@ -14,7 +14,11 @@ export class ReminderService {
   }
 
   async findAll(): Promise<Reminder[]> {
-    return await this.prisma.reminder.findMany();
+    return await this.prisma.reminder.findMany({
+      where: {
+        completedAt: null
+      }
+    });
   }
 
   async findByUuid(uuid: string): Promise<Reminder> {
@@ -33,6 +37,13 @@ export class ReminderService {
 
   async remove(reminder: Reminder): Promise<void> {
     await this.prisma.reminder.delete({ where: { uuid: reminder.uuid } });
+  }
+
+  async complete(reminder: Reminder): Promise<void> {
+    await this.prisma.reminder.update({
+      where: { uuid: reminder.uuid },
+      data: { completedAt: new Date() },
+    });
   }
 
   toResponse(reminder: Reminder): ReminderResponseDto {

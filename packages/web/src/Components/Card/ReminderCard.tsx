@@ -20,6 +20,7 @@ function getColor(datetime: moment.Moment) {
 type Props = {
   reminder: Reminder;
   onRemove?: (reminder: Reminder) => void;
+  onComplete?: (reminder: Reminder) => void;
 };
 export function ReminderCard(props: Props) {
   const { reminder } = props;
@@ -48,6 +49,13 @@ export function ReminderCard(props: Props) {
     });
   }
 
+  function handleComplete() {
+    reminderRepository.completeReminder(reminder.uuid).then(() => {
+      remindersDispatch({ type: "COMPLETE", payload: reminder.uuid });
+      props.onComplete?.(reminder);
+    });
+  }
+
   return (
     <Card sx={{ backgroundColor: color }}>
       <CardContent>
@@ -55,6 +63,7 @@ export function ReminderCard(props: Props) {
         <Typography color="text.secondary">{reminder.datetime.format("YYYY/MM/DD HH:mm")}</Typography>
         <Typography>{reminder.description}</Typography>
         <Button onClick={handleRemove}>削除</Button>
+        <Button onClick={handleComplete}>完了</Button>
       </CardContent>
     </Card>
   );
