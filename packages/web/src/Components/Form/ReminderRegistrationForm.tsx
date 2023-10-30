@@ -2,7 +2,7 @@ import { useContext, useReducer, useState } from "react";
 import moment from "moment";
 import { z } from "zod";
 import { AxiosError } from "axios";
-import { Button, Stack, TextField } from "@mui/material";
+import { Box, Button, Modal, Stack, TextField, Typography } from "@mui/material";
 import { DateTimePicker, renderTimeViewClock } from "@mui/x-date-pickers";
 import { ReminderCreationSchema } from "@smart-task-reminder/common";
 import { reminderRepository } from "@smart-task-reminder/api-client";
@@ -62,6 +62,7 @@ export function ReminderRegistrationForm(props: Props) {
   const [reminder, dispatch] = useReducer(reducer, initialReminder);
   const [error, setError] = useState<z.ZodIssue[]>([]);
   const remindersDispatch = useContext(RemindersDispatchContext);
+  const [openResetModal, setOpenResetModal] = useState(false);
 
   function handleChangeDate(newValue: moment.Moment | null) {
     dispatch({
@@ -145,6 +146,27 @@ export function ReminderRegistrationForm(props: Props) {
     return error.find((e) => e.path[0] === name);
   }
 
+  function closeResetModal() {
+    setOpenResetModal(false);
+  }
+
+  function handleReset() {
+    dispatch({ type: "reset" });
+    setError([]);
+    closeResetModal();
+  }
+
+  const modalStyle = {
+    position: "absolute" as const,
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    width: 400,
+    backgroundColor: "background.paper",
+    boxShadow: 24,
+    p: 4,
+  };
+
   return (
     <Stack spacing={1}>
       <TextField
@@ -181,6 +203,24 @@ export function ReminderRegistrationForm(props: Props) {
       <Button variant="contained" color="primary" fullWidth onClick={handleRegister}>
         登録
       </Button>
+      <Button variant="outlined" color="primary" fullWidth onClick={() => setOpenResetModal(true)}>
+        リセット
+      </Button>
+      <Modal open={openResetModal} onClose={closeResetModal}>
+        <Box sx={modalStyle}>
+          <Stack spacing={2}>
+            <Typography variant="h6" component="h2">
+              入力中の内容を破棄しますか？
+            </Typography>
+            <Button variant="contained" color="primary" fullWidth onClick={handleReset}>
+              破棄します
+            </Button>
+            <Button variant="outlined" color="primary" fullWidth onClick={closeResetModal}>
+              キャンセル
+            </Button>
+          </Stack>
+        </Box>
+      </Modal>
     </Stack>
   );
 }
