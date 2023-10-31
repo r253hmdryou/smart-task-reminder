@@ -12,6 +12,7 @@
     "prisma:generate": "run-p prisma:generate:*",
     "prisma:generate:container": "docker compose exec backend npm run prisma:generate -w @smart-task-reminder/backend",
     "prisma:generate:local": "npm run prisma:generate -w @smart-task-reminder/backend",
+    "prisma:push": "run-s prisma:push:container prisma:generate:local",
     "prisma:push:container": "docker compose exec backend npm run prisma:push -w @smart-task-reminder/backend",
     "prisma:migrate:container": "docker compose exec backend npm run prisma:migrate -w @smart-task-reminder/backend",
     "prisma:deploy:container": "docker compose exec backend npm run prisma:deploy",

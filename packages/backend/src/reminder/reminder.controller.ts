@@ -37,9 +37,9 @@ export class ReminderController {
   @ApiOkResponse({ type: ReminderResponseDto, isArray: true })
   async get(): Promise<ReminderResponseDto[]> {
     const reminders = await this.reminderService.findAll();
-    return reminders.map((reminder) =>
-      this.reminderService.toResponse(reminder),
-    );
+    return reminders.map((reminder) => {
+      return reminder.toResponse();
+    });
   }
 
   @Post()
@@ -53,7 +53,7 @@ export class ReminderController {
     @Body() reminderCreationDto: ReminderCreationDto,
   ): Promise<ReminderResponseDto> {
     const reminder = await this.reminderService.create(reminderCreationDto);
-    return this.reminderService.toResponse(reminder);
+    return reminder.toResponse();
   }
 
   @Delete('/:id')
@@ -65,7 +65,8 @@ export class ReminderController {
   @ApiNoContentResponse()
   async deleteIdReminder(@Param('id') id: string): Promise<void> {
     const reminder = await this.reminderService.findByUuid(id);
-    await this.reminderService.remove(reminder);
+    reminder.remove();
+    await this.reminderService.save(reminder);
   }
 
   @Put('/:id/complete')
@@ -77,6 +78,7 @@ export class ReminderController {
   @ApiOkResponse()
   async putIdReminder(@Param('id') id: string): Promise<void> {
     const reminder = await this.reminderService.findByUuid(id);
-    await this.reminderService.complete(reminder);
+    reminder.complete();
+    await this.reminderService.save(reminder);
   }
 }

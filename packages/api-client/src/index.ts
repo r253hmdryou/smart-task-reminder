@@ -1,6 +1,8 @@
 import axios from "axios";
 import { Configuration, ReminderApi } from "./codegen";
 
+export * from "./codegen";
+
 const API_BASE_URL = process.env.API_BASE_URL;
 
 const config = new Configuration({

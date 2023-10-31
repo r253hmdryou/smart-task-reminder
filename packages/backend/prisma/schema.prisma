@@ -11,11 +11,11 @@ datasource db {
 }
 
 model Reminder {
-  id Int @id @default(autoincrement())
-  uuid String @unique
-  title String
+  id          BigInt    @id @default(autoincrement())
+  uuid        String    @unique
+  title       String
   description String
-  datetime DateTime
-  createdAt DateTime
+  datetime    DateTime
+  createdAt   DateTime
   completedAt DateTime?
 }

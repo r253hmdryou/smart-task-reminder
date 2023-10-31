@@ -78,6 +78,18 @@ export interface ReminderResponseDto {
      * @memberof ReminderResponseDto
      */
     'datetime': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ReminderResponseDto
+     */
+    'createdAt': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ReminderResponseDto
+     */
+    'completedAt'?: string;
 }
 
 /**
