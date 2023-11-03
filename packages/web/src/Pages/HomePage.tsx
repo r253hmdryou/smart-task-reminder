@@ -1,28 +1,24 @@
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Box, Container, Grid, Tab, Tabs } from "@mui/material";
 import { useLocation, useNavigate } from "react-router-dom";
 import { reminderRepository } from "@smart-task-reminder/api-client";
 
-import { RemindersContext, RemindersDispatchContext } from "@/Context";
 import { ReminderRegistrationForm } from "@/Components/Form/ReminderRegistrationForm";
 import { ReminderCardList } from "@/Components/List/ReminderCardList";
+import { ReminderEntity } from "@/entity/Reminder";
 
 export function HomePage() {
-  const reminders = useContext(RemindersContext);
-  const remindersDispatch = useContext(RemindersDispatchContext);
   const location = useLocation();
   const navigate = useNavigate();
   const [tab, setTab] = useState(0);
+  const [reminders, setReminders] = useState<ReminderEntity[]>([]);
 
   async function refreshReminders() {
     const response =
       tab === 1
         ? await reminderRepository.getCompletedReminders()
         : await reminderRepository.getReminders();
-    remindersDispatch({
-      type: "REFRESH",
-      payload: response.data,
-    });
+    setReminders(response.data.map(ReminderEntity.fromApi));
   }
 
   useEffect(() => {

@@ -1,35 +1,31 @@
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import moment from "moment";
 import { Button, Card, CardContent, Typography } from "@mui/material";
 
-import { Reminder } from "@/Reducer/remindersReducer";
-import { RemindersDispatchContext } from "@/Context";
-import { reminderRepository } from "@smart-task-reminder/api-client";
+import { ReminderEntity, ReminderStatus } from "@/entity/Reminder";
 
-function isOverdue(datetime: moment.Moment) {
-  return datetime.isBefore();
-}
-
-function getColor(datetime: moment.Moment) {
-  if (isOverdue(datetime)) {
+function getColor(status: ReminderStatus) {
+  if (status === "completed") {
+    return "text.disabled";
+  }
+  if (status === "overdue") {
     return "warning.main";
   }
   return "background.default";
 }
 
 type Props = {
-  reminder: Reminder;
-  onRemove?: (reminder: Reminder) => void;
-  onComplete?: (reminder: Reminder) => void;
+  reminder: ReminderEntity;
+  onRemove?: (reminder: ReminderEntity) => void;
+  onComplete?: (reminder: ReminderEntity) => void;
 };
 export function ReminderCard(props: Props) {
   const { reminder } = props;
-  const [color, setColor] = useState(getColor(reminder.datetime));
+  const [color, setColor] = useState(getColor(reminder.status));
   const [refresh, setRefresh] = useState(0);
-  const remindersDispatch = useContext(RemindersDispatchContext);
 
   useEffect(() => {
-    if (isOverdue(reminder.datetime)) {
+    if (reminder.isOverdue()) {
       return;
     }
     const timer = reminder.datetime.diff(moment(), "millisecond");
@@ -39,19 +35,17 @@ export function ReminderCard(props: Props) {
   }, []);
 
   useEffect(() => {
-    setColor(getColor(reminder.datetime));
+    setColor(getColor(reminder.status));
   }, [refresh, reminder.datetime]);
 
   function handleRemove() {
-    reminderRepository.removeReminder(reminder.uuid).then(() => {
-      remindersDispatch({ type: "REMOVE", payload: reminder.uuid });
+    reminder.remove().then(() => {
       props.onRemove?.(reminder);
     });
   }
 
   function handleComplete() {
-    reminderRepository.completeReminder(reminder.uuid).then(() => {
-      remindersDispatch({ type: "COMPLETE", payload: reminder.uuid });
+    reminder.complete().then(() => {
       props.onComplete?.(reminder);
     });
   }

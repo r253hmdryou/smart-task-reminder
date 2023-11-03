@@ -1,11 +1,11 @@
 import { Grid } from "@mui/material";
 
 import { ReminderCard } from "@/Components/Card/ReminderCard";
-import { Reminder } from "@/Reducer/remindersReducer";
+import { ReminderEntity } from "@/entity/Reminder";
 
 type Props = {
-  reminders: Reminder[];
-  onRemove?: (reminder: Reminder) => void;
+  reminders: ReminderEntity[];
+  onRemove?: (reminder: ReminderEntity) => void;
 };
 export function ReminderCardList(props: Props) {
   const ReminderCardList = props.reminders.map((reminder) => {

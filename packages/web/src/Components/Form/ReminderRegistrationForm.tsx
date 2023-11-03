@@ -1,4 +1,4 @@
-import { useContext, useReducer, useState } from "react";
+import { useReducer, useState } from "react";
 import moment from "moment";
 import { z } from "zod";
 import { AxiosError } from "axios";
@@ -7,7 +7,6 @@ import { DateTimePicker, renderTimeViewClock } from "@mui/x-date-pickers";
 import { ReminderCreationSchema } from "@smart-task-reminder/common";
 import { reminderRepository } from "@smart-task-reminder/api-client";
 
-import { RemindersDispatchContext } from "@/Context";
 import { assertNotNull, getNextRounded30Minutes } from "@/libs/utils";
 import { isValidationError, isZodError } from "@/libs/error";
 
@@ -63,7 +62,6 @@ type Props = {
 export function ReminderRegistrationForm(props: Props) {
   const [reminder, dispatch] = useReducer(reducer, initialReminder);
   const [error, setError] = useState<z.ZodIssue[]>([]);
-  const remindersDispatch = useContext(RemindersDispatchContext);
   const [openResetModal, setOpenResetModal] = useState(false);
 
   function handleChangeDate(newValue: moment.Moment | null) {
@@ -116,11 +114,7 @@ export function ReminderRegistrationForm(props: Props) {
         ...reminder,
         datetime: assertNotNull(reminder.datetime).second(0).millisecond(0).toISOString(),
       })
-      .then((response) => {
-        remindersDispatch({
-          type: "ADD",
-          payload: response.data,
-        });
+      .then(() => {
         props.onRegister();
         dispatch({ type: "reset" });
         setError([]);
