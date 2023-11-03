@@ -23,6 +23,19 @@ export class ReminderService {
     });
   }
 
+  async findAllCompleted(): Promise<ReminderEntity[]> {
+    const models = await this.prisma.reminder.findMany({
+      where: {
+        completedAt: {
+          not: null,
+        },
+      },
+    });
+    return models.map((model) => {
+      return ReminderEntity.fromPrisma(model);
+    });
+  }
+
   async findByUuid(uuid: string): Promise<ReminderEntity> {
     const reminder = await this.prisma.reminder.findUnique({ where: { uuid } });
     if (reminder === null) {

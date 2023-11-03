@@ -288,6 +288,43 @@ export const ReminderApiAxiosParamCreator = function (configuration?: Configurat
             };
         },
         /**
+         * 完了済みのリマインダー一覧を取得する
+         * @summary 完了済みのリマインダー一覧を取得する
+         * @param {any} [xRequestedWith] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getCompletedReminders: async (xRequestedWith?: any, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/v1/reminders/@completed`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (xRequestedWith != null) {
+                localVarHeaderParameter['X-Requested-With'] = typeof xRequestedWith === 'string'
+                    ? xRequestedWith
+                    : JSON.stringify(xRequestedWith);
+            }
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
          * リマインダー一覧を取得する
          * @summary リマインダー一覧を取得する
          * @param {any} [xRequestedWith] 
@@ -400,6 +437,17 @@ export const ReminderApiFp = function(configuration?: Configuration) {
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
+         * 完了済みのリマインダー一覧を取得する
+         * @summary 完了済みのリマインダー一覧を取得する
+         * @param {any} [xRequestedWith] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getCompletedReminders(xRequestedWith?: any, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<ReminderResponseDto>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getCompletedReminders(xRequestedWith, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
          * リマインダー一覧を取得する
          * @summary リマインダー一覧を取得する
          * @param {any} [xRequestedWith] 
@@ -453,6 +501,16 @@ export const ReminderApiFactory = function (configuration?: Configuration, baseP
          */
         createReminder(reminderCreationDto: ReminderCreationDto, xRequestedWith?: any, options?: any): AxiosPromise<ReminderResponseDto> {
             return localVarFp.createReminder(reminderCreationDto, xRequestedWith, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 完了済みのリマインダー一覧を取得する
+         * @summary 完了済みのリマインダー一覧を取得する
+         * @param {any} [xRequestedWith] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getCompletedReminders(xRequestedWith?: any, options?: any): AxiosPromise<Array<ReminderResponseDto>> {
+            return localVarFp.getCompletedReminders(xRequestedWith, options).then((request) => request(axios, basePath));
         },
         /**
          * リマインダー一覧を取得する
@@ -509,6 +567,18 @@ export class ReminderApi extends BaseAPI {
      */
     public createReminder(reminderCreationDto: ReminderCreationDto, xRequestedWith?: any, options?: AxiosRequestConfig) {
         return ReminderApiFp(this.configuration).createReminder(reminderCreationDto, xRequestedWith, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 完了済みのリマインダー一覧を取得する
+     * @summary 完了済みのリマインダー一覧を取得する
+     * @param {any} [xRequestedWith] 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ReminderApi
+     */
+    public getCompletedReminders(xRequestedWith?: any, options?: AxiosRequestConfig) {
+        return ReminderApiFp(this.configuration).getCompletedReminders(xRequestedWith, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**

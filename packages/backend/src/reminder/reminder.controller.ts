@@ -45,6 +45,20 @@ export class ReminderController {
     return reminder.toResponse();
   }
 
+  @Get("/@completed")
+  @ApiOperation({
+    operationId: "getCompletedReminders",
+    summary: "完了済みのリマインダー一覧を取得する",
+    description: "完了済みのリマインダー一覧を取得する",
+  })
+  @ApiOkResponse({ type: ReminderResponseDto, isArray: true })
+  async getCompleted(): Promise<ReminderResponseDto[]> {
+    const reminders = await this.reminderService.findAllCompleted();
+    return reminders.map((reminder) => {
+      return reminder.toResponse();
+    });
+  }
+
   @Delete("/:id")
   @ApiOperation({
     operationId: "removeReminder",
