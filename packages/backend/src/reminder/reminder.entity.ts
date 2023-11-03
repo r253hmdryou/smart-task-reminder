@@ -1,7 +1,7 @@
 import { v4 } from "uuid";
-import { ReminderCore } from "../../../common/dist/reminder";
 import { ReminderCreationDto, ReminderResponseDto } from "./reminder.dto";
 import { Reminder } from "@prisma/client";
+import { ReminderCore } from "@smart-task-reminder/common";
 
 interface PropertiesCore extends ReminderCore {
   isRemoved?: boolean;
@@ -29,6 +29,7 @@ export class ReminderEntity {
     if (this.properties.isRemoved) {
       return true;
     }
+    return false;
   }
 
   static factory(properties: ReminderCreationDto): ReminderEntity {
@@ -38,6 +39,7 @@ export class ReminderEntity {
 
       uuid: v4(),
       createdAt: new Date(),
+      completedAt: null,
     });
   }
 
@@ -65,13 +67,17 @@ export class ReminderEntity {
   }
 
   toResponse(): ReminderResponseDto {
+    let completedAt: string | null = null;
+    if (this.properties.completedAt !== null) {
+      completedAt = this.properties.completedAt.toISOString();
+    }
     return {
       uuid: this.properties.uuid,
       title: this.properties.title,
       description: this.properties.description,
       datetime: this.properties.datetime.toISOString(),
       createdAt: this.properties.createdAt.toISOString(),
-      completedAt: this.properties.completedAt?.toISOString(),
+      completedAt: completedAt,
     };
   }
 
@@ -99,7 +105,7 @@ export class ReminderEntity {
     return this.properties.createdAt;
   }
 
-  get completedAt(): Date | undefined {
+  get completedAt(): Date | null {
     return this.properties.completedAt;
   }
 

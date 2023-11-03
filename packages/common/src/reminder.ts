@@ -10,14 +10,14 @@ const ReminderCoreSchema = z.object({
   description: z.string().min(0).max(255),
   datetime: z.date(),
   createdAt: z.date(),
-  completedAt: z.date().optional(),
+  completedAt: z.date().nullable(),
 });
 export type ReminderCore = z.infer<typeof ReminderCoreSchema>;
 
 export const ReminderResponseSchema = ReminderCoreSchema.extend({
   datetime: z.string().datetime(),
   createdAt: z.string().datetime(),
-  completedAt: z.string().datetime().optional(),
+  completedAt: z.string().datetime().nullable(),
 }).omit({
   id: true,
 });

@@ -39,7 +39,7 @@ export class ReminderService {
   async save(reminder: ReminderEntity): Promise<ReminderEntity> {
     if (reminder.isRemoved) {
       await this.prisma.reminder.delete({ where: { uuid: reminder.uuid } });
-      return;
+      return reminder;
     }
     const model = await this.prisma.reminder.upsert({
       where: {

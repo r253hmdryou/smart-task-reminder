@@ -89,7 +89,7 @@ export interface ReminderResponseDto {
      * @type {string}
      * @memberof ReminderResponseDto
      */
-    'completedAt'?: string;
+    'completedAt': string | null;
 }
 
 /**
