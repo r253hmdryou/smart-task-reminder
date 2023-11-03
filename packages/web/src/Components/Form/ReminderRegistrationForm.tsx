@@ -8,7 +8,7 @@ import { ReminderCreationSchema } from "@smart-task-reminder/common";
 import { reminderRepository } from "@smart-task-reminder/api-client";
 
 import { RemindersDispatchContext } from "@/Context";
-import { getNextRounded30Minutes } from "@/libs/utils";
+import { assertNotNull, getNextRounded30Minutes } from "@/libs/utils";
 import { isValidationError, isZodError } from "@/libs/error";
 
 export type ReminderCreation = {
@@ -41,7 +41,9 @@ function reducer(state: ReminderCreation, action: Action) {
       const newState = {
         ...state,
         isEditing: true,
-        datetime: state.isEditing ? state.datetime : getNextRounded30Minutes(moment().add(30, "minutes")),
+        datetime: state.isEditing
+          ? state.datetime
+          : getNextRounded30Minutes(moment().add(30, "minutes")),
         ...action.payload,
       };
       if (action.callback) {
@@ -88,7 +90,7 @@ export function ReminderRegistrationForm(props: Props) {
     });
   }
 
-  function validation(reminder: ReminderCreation): reminder is Required<ReminderCreation> {
+  function validation(reminder: ReminderCreation): boolean {
     try {
       ReminderCreationSchema.parse({
         ...reminder,
@@ -112,7 +114,7 @@ export function ReminderRegistrationForm(props: Props) {
     reminderRepository
       .createReminder({
         ...reminder,
-        datetime: reminder.datetime!.second(0).millisecond(0).toISOString(),
+        datetime: assertNotNull(reminder.datetime).second(0).millisecond(0).toISOString(),
       })
       .then((response) => {
         remindersDispatch({

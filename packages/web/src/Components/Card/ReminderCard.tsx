@@ -60,7 +60,9 @@ export function ReminderCard(props: Props) {
     <Card sx={{ backgroundColor: color }}>
       <CardContent>
         <Typography variant="h5">{reminder.title}</Typography>
-        <Typography color="text.secondary">{reminder.datetime.format("YYYY/MM/DD HH:mm")}</Typography>
+        <Typography color="text.secondary">
+          {reminder.datetime.format("YYYY/MM/DD HH:mm")}
+        </Typography>
         <Typography>{reminder.description}</Typography>
         <Button onClick={handleRemove}>削除</Button>
         <Button onClick={handleComplete}>完了</Button>

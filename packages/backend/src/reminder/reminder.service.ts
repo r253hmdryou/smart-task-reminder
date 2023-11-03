@@ -1,17 +1,15 @@
-import { Injectable } from '@nestjs/common';
-import { v4 } from 'uuid';
-import { Reminder } from '@prisma/client';
+import { Injectable, NotFoundException } from "@nestjs/common";
 
-import { PrismaService } from '../vendors/prisma/prisma.service';
-import { ReminderCreationDto, ReminderResponseDto } from './reminder.dto';
-import { ReminderEntity } from './reminder.entity';
+import { PrismaService } from "../vendors/prisma/prisma.service";
+import { ReminderCreationDto } from "./reminder.dto";
+import { ReminderEntity } from "./reminder.entity";
 
 @Injectable()
 export class ReminderService {
   constructor(private prisma: PrismaService) {}
 
   getHello(): string {
-    return 'Hello World!';
+    return "Hello World!";
   }
 
   async findAll(): Promise<ReminderEntity[]> {
@@ -28,6 +26,7 @@ export class ReminderService {
   async findByUuid(uuid: string): Promise<ReminderEntity> {
     const reminder = await this.prisma.reminder.findUnique({ where: { uuid } });
     if (reminder === null) {
+      throw new NotFoundException("リマインダーが見つかりません");
     }
     return ReminderEntity.fromPrisma(reminder);
   }

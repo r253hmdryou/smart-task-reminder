@@ -1,7 +1,7 @@
-import { v4 } from 'uuid';
-import { ReminderCore } from '../../../common/dist/reminder';
-import { ReminderCreationDto, ReminderResponseDto } from './reminder.dto';
-import { Reminder } from '@prisma/client';
+import { v4 } from "uuid";
+import { ReminderCore } from "../../../common/dist/reminder";
+import { ReminderCreationDto, ReminderResponseDto } from "./reminder.dto";
+import { Reminder } from "@prisma/client";
 
 interface PropertiesCore extends ReminderCore {
   isRemoved?: boolean;
@@ -16,7 +16,7 @@ export class ReminderEntity {
 
   getOptionalProperty<T>(property: T | undefined): T {
     if (property === undefined) {
-      throw new Error('property is undefined');
+      throw new Error("property is undefined");
     }
     return property;
   }

@@ -1,6 +1,6 @@
-import { Controller, Get, UsePipes } from '@nestjs/common';
-import { ZodValidationPipe } from 'nestjs-zod';
-import { AppService } from './app.service';
+import { Controller, Get, UsePipes } from "@nestjs/common";
+import { ZodValidationPipe } from "nestjs-zod";
+import { AppService } from "./app.service";
 
 @Controller()
 @UsePipes(ZodValidationPipe)

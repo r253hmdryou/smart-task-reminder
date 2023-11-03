@@ -21,10 +21,16 @@
     "start:dev:api-client": "npm run start:dev -w @smart-task-reminder/api-client",
     "start:dev:common": "npm run start:dev -w @smart-task-reminder/common",
     "start:dev:web": "npm run start:dev -w @smart-task-reminder/web",
-    "start:dev:backend": "npm run start:dev -w @smart-task-reminder/backend"
-  },
-  "dependencies": {
-    "zod": "^3.22.4"
+    "start:dev:backend": "npm run start:dev -w @smart-task-reminder/backend",
+    "lint": "run-p lint:*",
+    "lint:backend": "npm run lint -w @smart-task-reminder/backend",
+    "lint:web": "npm run lint -w @smart-task-reminder/web",
+    "format": "run-p format:check:*",
+    "format:check:backend": "npm run format -w @smart-task-reminder/backend",
+    "format:check:web": "npm run format -w @smart-task-reminder/web",
+    "format:fix": "run-p format:fix:*",
+    "format:fix:backend": "npm run format:fix -w @smart-task-reminder/backend",
+    "format:fix:web": "npm run format:fix -w @smart-task-reminder/web"
   },
   "devDependencies": {
     "npm-run-all": "^4.1.5",

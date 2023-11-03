@@ -8,3 +8,16 @@ export function getNextRounded30Minutes(date: moment.Moment): moment.Moment {
   next.minutes(Math.ceil(next.minutes() / 30) * 30);
   return next;
 }
+
+/**
+ * 引数がnullでないことを保証する
+ * @param arg nullの可能性がある引数
+ * @throws Error 引数がnullの場合
+ * @returns 引数
+ */
+export function assertNotNull<T>(arg: T | null): T {
+  if (arg === null) {
+    throw new Error("Argument cannot be null");
+  }
+  return arg;
+}

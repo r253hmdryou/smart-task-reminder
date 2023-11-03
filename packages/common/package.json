@@ -4,10 +4,12 @@
   "description": "",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
-  "devDependencies": {},
   "scripts": {
     "start:dev": "tsc -b --watch"
   },
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "zod": "^3.22.4"
+  }
 }
