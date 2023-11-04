@@ -59,7 +59,7 @@ export function ReminderCard(props: Props) {
         </Typography>
         <Typography>{reminder.description}</Typography>
         <Button onClick={handleRemove}>削除</Button>
-        <Button onClick={handleComplete}>完了</Button>
+        {reminder.status !== "completed" && <Button onClick={handleComplete}>完了</Button>}
       </CardContent>
     </Card>
   );
