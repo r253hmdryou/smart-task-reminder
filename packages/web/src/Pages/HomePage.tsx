@@ -10,14 +10,24 @@ import { ReminderEntity } from "@/entity/Reminder";
 export function HomePage() {
   const location = useLocation();
   const navigate = useNavigate();
-  const [tab, setTab] = useState(0);
+  const [tab, setTab] = useState<null | number>(null);
   const [reminders, setReminders] = useState<ReminderEntity[]>([]);
 
+  async function getReminders() {
+    switch (tab) {
+      case 0:
+        return await reminderRepository.getReminders();
+      case 1:
+        return await reminderRepository.getCompletedReminders();
+      case null:
+        return { data: [] };
+      default:
+        return await reminderRepository.getReminders();
+    }
+  }
+
   async function refreshReminders() {
-    const response =
-      tab === 1
-        ? await reminderRepository.getCompletedReminders()
-        : await reminderRepository.getReminders();
+    const response = await getReminders();
     setReminders(response.data.map(ReminderEntity.fromApi));
   }
 
@@ -53,12 +63,17 @@ export function HomePage() {
         </Grid>
       </Grid>
       <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-        <Tabs value={tab} onChange={handleChangeTab} centered>
+        <Tabs value={tab || 0} onChange={handleChangeTab} centered>
           <Tab label="リマインダー" />
           <Tab label="完了したリマインダー" />
         </Tabs>
       </Box>
-      <ReminderCardList reminders={reminders} onRemove={refreshReminders} />
+      <ReminderCardList
+        reminders={reminders}
+        onRemove={refreshReminders}
+        onComplete={refreshReminders}
+        onUncomplete={refreshReminders}
+      />
     </Container>
   );
 }

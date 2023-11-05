@@ -58,6 +58,10 @@ export class ReminderEntity {
     await reminderRepository.completeReminder(this.properties.uuid);
   }
 
+  async uncomplete() {
+    await reminderRepository.uncompleteReminder(this.properties.uuid);
+  }
+
   get uuid(): string {
     return this.properties.uuid;
   }

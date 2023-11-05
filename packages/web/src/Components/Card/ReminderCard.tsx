@@ -18,6 +18,7 @@ type Props = {
   reminder: ReminderEntity;
   onRemove?: (reminder: ReminderEntity) => void;
   onComplete?: (reminder: ReminderEntity) => void;
+  onUncomplete?: (reminder: ReminderEntity) => void;
 };
 export function ReminderCard(props: Props) {
   const { reminder } = props;
@@ -50,6 +51,12 @@ export function ReminderCard(props: Props) {
     });
   }
 
+  function handleUncomplete() {
+    reminder.uncomplete().then(() => {
+      props.onUncomplete?.(reminder);
+    });
+  }
+
   return (
     <Card sx={{ backgroundColor: color }}>
       <CardContent>
@@ -60,6 +67,9 @@ export function ReminderCard(props: Props) {
         <Typography>{reminder.description}</Typography>
         <Button onClick={handleRemove}>削除</Button>
         {reminder.status !== "completed" && <Button onClick={handleComplete}>完了</Button>}
+        {reminder.status === "completed" && (
+          <Button onClick={handleUncomplete}>未完了にする</Button>
+        )}
       </CardContent>
     </Card>
   );

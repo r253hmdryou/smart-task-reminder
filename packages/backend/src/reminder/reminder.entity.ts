@@ -112,4 +112,8 @@ export class ReminderEntity {
   complete(): void {
     this.properties.completedAt = new Date();
   }
+
+  uncomplete(): void {
+    this.properties.completedAt = null;
+  }
 }

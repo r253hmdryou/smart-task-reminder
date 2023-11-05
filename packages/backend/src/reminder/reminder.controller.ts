@@ -66,7 +66,7 @@ export class ReminderController {
     description: "リマインダーを削除する",
   })
   @ApiNoContentResponse()
-  async deleteIdReminder(@Param("id") id: string): Promise<void> {
+  async deleteId(@Param("id") id: string): Promise<void> {
     const reminder = await this.reminderService.findByUuid(id);
     reminder.remove();
     await this.reminderService.save(reminder);
@@ -79,9 +79,22 @@ export class ReminderController {
     description: "リマインダーを完了状態にする",
   })
   @ApiOkResponse()
-  async putIdReminder(@Param("id") id: string): Promise<void> {
+  async putIdComplete(@Param("id") id: string): Promise<void> {
     const reminder = await this.reminderService.findByUuid(id);
     reminder.complete();
+    await this.reminderService.save(reminder);
+  }
+
+  @Delete("/:id/complete")
+  @ApiOperation({
+    operationId: "uncompleteReminder",
+    summary: "リマインダーの完了状態を取り消す",
+    description: "リマインダーの完了状態を取り消す",
+  })
+  @ApiOkResponse()
+  async deleteIdComplete(@Param("id") id: string): Promise<void> {
+    const reminder = await this.reminderService.findByUuid(id);
+    reminder.uncomplete();
     await this.reminderService.save(reminder);
   }
 }
